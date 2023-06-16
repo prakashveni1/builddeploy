@@ -1,0 +1,21 @@
+name: Test, Build and Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build_and_push:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set tag var
+        id: vars
+        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}" >> $GITHUB_OUTPUT
+      - name: Docker Build
+        uses: "actions/docker/cli@master"
+        with:
+          args: build . --file Dockerfile -t cflynnus/blog:${{ steps.vars.outputs.docker_tag }}
+      - name: Docker Tag Latest
+        uses: "actions/docker/cli@master"
+        with:
+          args: tag cflynnus/blog:${{ steps.vars.outputs.docker_tag }} cflynnus/blog:latest

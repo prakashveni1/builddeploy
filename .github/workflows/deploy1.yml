@@ -15,7 +15,7 @@ jobs:
         uses: "actions/docker/cli@master"
         with:
           args: build . --file Dockerfile -t cflynnus/blog:${{ steps.vars.outputs.docker_tag }}
-      - name: Docker Tag Latest
+      - name: Docker Tags Latest
         uses: "actions/docker/cli@master"
         with:
           args: tag cflynnus/blog:${{ steps.vars.outputs.docker_tag }} cflynnus/blog:latest
